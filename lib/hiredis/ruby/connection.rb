@@ -266,7 +266,7 @@ module Hiredis
         while (reply = @reader.gets) == false
           begin
             @reader.feed @sock.read_nonblock(1024)
-          rescue Errno::EAGAIN
+          rescue Errno::EAGAIN, IO::EWOULDBLOCKWaitReadable
             if IO.select([@sock], [], [], @timeout)
               # Readable, try again
               retry
